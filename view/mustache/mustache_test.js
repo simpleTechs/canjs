@@ -2566,4 +2566,24 @@ test('html comments must not break mustache scanner', function(){
 	});	
 })
 
+test("if helper within className (#592)", function(){
+	
+	var tmp = can.view.mustache('<div class="fails {{#state}}animate-{{.}}{{/state}}"></div>');
+	var data = new can.Map({
+		state: "ready"
+	})
+	var frag = tmp(data);
+	
+	equal( frag.childNodes[0].className,"fails animate-ready" )
+	
+	var tmp = can.view.mustache('<div class="fails {{#if state}}animate-{{state}}{{/if}}"></div>');
+	var data = new can.Map({
+		state: "ready"
+	})
+	var frag = tmp(data);
+	
+	equal( frag.childNodes[0].className,"fails animate-ready" )
+	
+})
+
 })();
